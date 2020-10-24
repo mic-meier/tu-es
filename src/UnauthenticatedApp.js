@@ -1,3 +1,5 @@
+import { Button, FormGroup, Input } from './components/lib'
+
 function UnauthenticatedApp({
   handleSignUp,
   email,
@@ -11,46 +13,48 @@ function UnauthenticatedApp({
       <div>Hello</div>
       <div>Sign up:</div>
       <form onSubmit={handleSignUp}>
-        <div>
+        <FormGroup>
           <label htmlFor="email">Email: </label>
-          <input
+          <Input
             id="email"
             type="text"
             value={email}
             onChange={handleEmailChange}
           />
-        </div>
-        <div>
+        </FormGroup>
+        <FormGroup>
           <label htmlFor="password">Password: </label>
-          <input
+          <Input
             id="password"
             type="password"
             value={password}
             onChange={handlePasswordChange}
           />
-        </div>
-        <button type="submit">Sign Up</button>
+        </FormGroup>
+        <Button variant="secondary" type="submit">
+          Sign Up
+        </Button>
       </form>
       <form onSubmit={handleLogin}>
-        <div>
+        <FormGroup>
           <label htmlFor="email">Email: </label>
-          <input
+          <Input
             id="email"
             type="text"
             value={email}
             onChange={handleEmailChange}
           />
-        </div>
-        <div>
+        </FormGroup>
+        <FormGroup>
           <label htmlFor="password">Password: </label>
-          <input
+          <Input
             id="password"
             type="password"
             value={password}
             onChange={handlePasswordChange}
           />
-        </div>
-        <button type="submit">Log In</button>
+        </FormGroup>
+        <Button type="submit">Log In</Button>
       </form>
     </>
   )
