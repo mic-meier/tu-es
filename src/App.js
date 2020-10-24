@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAsync } from 'utils/hooks'
 
 import AuthenticatedApp from './AuthenticatedApp'
+import { FullPageSpinner } from './components/lib'
 import fb from './firebase'
 import UnauthenticatedApp from './UnauthenticatedApp'
 
@@ -88,7 +89,7 @@ function App() {
   }, [])
 
   if (isLoading || isIdle) {
-    return <div>...Loadingspinner</div>
+    return <FullPageSpinner />
   }
 
   if (isError) {
