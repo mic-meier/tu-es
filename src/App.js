@@ -1,69 +1,37 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useAsync } from 'utils/hooks'
 
 import AuthenticatedApp from './AuthenticatedApp'
+import { FullPageSpinner } from './components/lib'
 import fb from './firebase'
 import UnauthenticatedApp from './UnauthenticatedApp'
 
 function App() {
-  const [user, setUser] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [emailError, setEmailError] = useState('')
-  const [passwordError, setPasswordError] = useState('')
-  const [hasAccount, setHasAccount] = useState(false)
+  const {
+    data: user,
+    error,
+    isLoading,
+    isIdle,
+    isError,
+    isSuccess,
+    setData,
+  } = useAsync()
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value)
-  }
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value)
-  }
-
-  const clearInputs = () => {
-    setEmail('')
-    setPassword('')
-  }
-
-  const clearErrors = () => {
-    setEmailError('')
-    setPasswordError('')
-  }
-
-  const handleLogin = (e) => {
-    e.preventDefault()
-    clearErrors()
-    fb.auth()
+  const handleLogin = async ({ email, password }) => {
+    await fb
+      .auth()
       .signInWithEmailAndPassword(email, password)
       .catch((error) => {
-        switch (error.code) {
-          case 'auth/invalid-email':
-          case 'auth/user-disabled':
-          case 'auth/user-not-found':
-            setEmailError(error.message)
-            break
-          case 'auth/wrong-password':
-            setPasswordError(error.message)
-            break
-        }
+        return Promise.reject(error)
       })
   }
 
-  const handleSignUp = (e) => {
-    e.preventDefault()
-    clearErrors()
-    fb.auth()
+  const handleSignUp = async ({ email, password }) => {
+    await fb
+      .auth()
       .createUserWithEmailAndPassword(email, password)
       .catch((error) => {
-        switch (error.code) {
-          case 'auth/email-already-in-use':
-          case 'auth/invalid-email':
-            setEmailError(error.message)
-            break
-          case 'auth/weak-password':
-            setPasswordError(error.message)
-            break
-        }
+        return Promise.reject(error)
       })
   }
 
@@ -71,13 +39,12 @@ function App() {
     fb.auth().signOut()
   }
 
-  const authListener = () => {
-    fb.auth().onAuthStateChanged((user) => {
+  const authListener = async () => {
+    await fb.auth().onAuthStateChanged((user) => {
       if (user) {
-        clearInputs()
-        setUser(user)
+        setData(user)
       } else {
-        setUser('')
+        setData('')
       }
     })
   }
@@ -86,16 +53,38 @@ function App() {
     authListener()
   }, [])
 
-  return user ? (
-    <AuthenticatedApp handleLogout={handleLogOut} />
-  ) : (
-    <UnauthenticatedApp
-      handleEmailChange={handleEmailChange}
-      handlePasswordChange={handlePasswordChange}
-      handleLogin={handleLogin}
-      handleSignUp={handleSignUp}
-    />
-  )
+  if (isLoading || isIdle) {
+    return <FullPageSpinner />
+  }
+
+  if (isError) {
+    return (
+      <div
+        css={{
+          color: 'red',
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <p>Uh oh... There&apos;s a problem. Try refreshing the app.</p>
+        <pre>{error.message}</pre>
+      </div>
+    )
+  }
+
+  if (isSuccess) {
+    return user ? (
+      <AuthenticatedApp handleLogout={handleLogOut} />
+    ) : (
+      <UnauthenticatedApp
+        handleLogin={handleLogin}
+        handleSignUp={handleSignUp}
+      />
+    )
+  }
 }
 
 export default App
