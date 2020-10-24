@@ -1,4 +1,7 @@
-import firebase from 'firebase'
+import 'firebase/analytics'
+import 'firebase/auth'
+
+import * as firebase from 'firebase/app'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDiBQj2z4Bc9HNTA3Gb0TFRjbmnn6SsuD0',
@@ -12,5 +15,6 @@ const firebaseConfig = {
 }
 // Initialize Firebase
 const fb = firebase.initializeApp(firebaseConfig)
+firebase.analytics()
 
 export default fb

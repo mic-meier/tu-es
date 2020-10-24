@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAsync } from 'utils/hooks'
 
 import AuthenticatedApp from './AuthenticatedApp'
@@ -7,9 +7,6 @@ import fb from './firebase'
 import UnauthenticatedApp from './UnauthenticatedApp'
 
 function App() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
   const {
     data: user,
     error,
@@ -18,54 +15,23 @@ function App() {
     isError,
     isSuccess,
     setData,
-    setError,
   } = useAsync()
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value)
-  }
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value)
-  }
-
-  const clearInputs = () => {
-    setEmail('')
-    setPassword('')
-  }
-
-  const handleLogin = (e) => {
-    e.preventDefault()
-    fb.auth()
+  const handleLogin = async ({ email, password }) => {
+    await fb
+      .auth()
       .signInWithEmailAndPassword(email, password)
       .catch((error) => {
-        switch (error.code) {
-          case 'auth/invalid-email':
-          case 'auth/user-disabled':
-          case 'auth/user-not-found':
-            setError(error.message)
-            break
-          case 'auth/wrong-password':
-            setError(error.message)
-            break
-        }
+        return Promise.reject(error)
       })
   }
 
-  const handleSignUp = (e) => {
-    e.preventDefault()
-    fb.auth()
+  const handleSignUp = async ({ email, password }) => {
+    await fb
+      .auth()
       .createUserWithEmailAndPassword(email, password)
       .catch((error) => {
-        switch (error.code) {
-          case 'auth/email-already-in-use':
-          case 'auth/invalid-email':
-            setError(error.message)
-            break
-          case 'auth/weak-password':
-            setError(error.message)
-            break
-        }
+        return Promise.reject(error)
       })
   }
 
@@ -76,7 +42,6 @@ function App() {
   const authListener = async () => {
     await fb.auth().onAuthStateChanged((user) => {
       if (user) {
-        clearInputs()
         setData(user)
       } else {
         setData('')
@@ -115,8 +80,6 @@ function App() {
       <AuthenticatedApp handleLogout={handleLogOut} />
     ) : (
       <UnauthenticatedApp
-        handleEmailChange={handleEmailChange}
-        handlePasswordChange={handlePasswordChange}
         handleLogin={handleLogin}
         handleSignUp={handleSignUp}
       />
