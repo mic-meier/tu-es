@@ -77,7 +77,7 @@ function App() {
 
   if (isSuccess) {
     return user ? (
-      <AuthenticatedApp handleLogout={handleLogOut} />
+      <AuthenticatedApp handleLogout={handleLogOut} user={user} />
     ) : (
       <UnauthenticatedApp
         handleLogin={handleLogin}
