@@ -6,6 +6,8 @@ import { FullPageSpinner } from './components/lib'
 import fb from './firebase'
 import UnauthenticatedApp from './UnauthenticatedApp'
 
+const db = fb.firestore()
+
 function App() {
   const {
     data: user,
@@ -30,6 +32,11 @@ function App() {
     await fb
       .auth()
       .createUserWithEmailAndPassword(email, password)
+      .then((cred) => {
+        return db.collection('users').doc(cred.user.uid).set({
+          email: cred.user.email,
+        })
+      })
       .catch((error) => {
         return Promise.reject(error)
       })

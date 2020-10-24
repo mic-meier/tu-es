@@ -47,7 +47,9 @@ function AuthenticatedApp({ handleLogout, user }) {
   }, [])
 
   function handleSubmit() {
-    db.collection(user.uid)
+    db.collection('users')
+      .doc(user.uid)
+      .collection('todos')
       .add({
         task: newTodo,
         completed: false,
