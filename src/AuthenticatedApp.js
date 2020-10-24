@@ -17,12 +17,12 @@ function Nav({ handleLogout, user }) {
       }}
     >
       <h2>Tu Es</h2>
-      <span>
-        {user.email}{' '}
+      <div>
+        <span css={{ padding: '0 1rem' }}>{user.email}</span>
         <Button variant="secondary" onClick={handleLogout}>
           Log out
         </Button>
-      </span>
+      </div>
     </nav>
   )
 }
