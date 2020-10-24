@@ -22,9 +22,9 @@ const CircleButton = styled.button({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  background: 'grey',
-  color: 'black',
-  border: `1px solid gray`,
+  background: '#f1f2f7',
+  color: colors.textDark,
+  border: `1px solid #f1f1f4`,
   cursor: 'pointer',
 })
 
@@ -37,12 +37,13 @@ Spinner.defaultProps = {
 
 const buttonVariants = {
   primary: {
-    background: 'blue',
-    color: 'white',
+    background: colors.primary,
+    color: colors.textLight,
   },
   secondary: {
-    background: 'gray',
-    color: 'black',
+    background: colors.background,
+    border: `1px solid ${colors.accent}`,
+    color: colors.accent,
   },
 }
 
@@ -107,7 +108,7 @@ function ErrorMessage({ errorMessage, variant = 'stacked', ...props }) {
   return (
     <div
       role="alert"
-      css={[{ color: colors.danger }, errorMessageVariants[variant]]}
+      css={[{ color: colors.warning }, errorMessageVariants[variant]]}
       {...props}
     >
       <pre

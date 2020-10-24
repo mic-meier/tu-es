@@ -14,7 +14,6 @@ import {
 import { useAsync } from './utils/hooks'
 
 const errorMessages = (error) => {
-  console.log('error', error)
   let message
   switch (error.code) {
     case 'auth/wrong-password':
@@ -34,12 +33,16 @@ const errorMessages = (error) => {
     default:
       throw new Error(`Uncaught error code '${error.code} in 'errorMessages'`)
   }
-  console.log('message', message)
   return message
 }
 
 function LoginForm({ onSubmit, submitButton }) {
   const { isLoading, isError, error, run } = useAsync()
+  const emailInput = React.useRef(null)
+
+  React.useEffect(() => {
+    emailInput.current.focus()
+  }, [])
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -50,8 +53,8 @@ function LoginForm({ onSubmit, submitButton }) {
         email: email.value,
         password: password.value,
       })
-    ).catch((e) => {
-      console.log(e)
+    ).catch(() => {
+      return
     })
   }
 
@@ -73,7 +76,7 @@ function LoginForm({ onSubmit, submitButton }) {
     >
       <FormGroup>
         <label htmlFor="email">Email:</label>
-        <Input id="email" />
+        <Input id="email" ref={emailInput} />
       </FormGroup>
       <FormGroup>
         <label htmlFor="password">Password:</label>
