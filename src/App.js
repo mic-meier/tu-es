@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 
+import AuthenticatedApp from './AuthenticatedApp'
 import fb from './firebase'
+import UnauthenticatedApp from './UnauthenticatedApp'
 
 function App() {
   const [user, setUser] = useState('')
@@ -84,55 +86,15 @@ function App() {
     authListener()
   }, [])
 
-  return (
-    <>
-      <div>Hello</div>
-      <div>Sign up:</div>
-      <form onSubmit={handleSignUp}>
-        <div>
-          <label htmlFor="email">Email: </label>
-          <input
-            id="email"
-            type="text"
-            value={email}
-            onChange={handleEmailChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password: </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label htmlFor="email">Email: </label>
-          <input
-            id="email"
-            type="text"
-            value={email}
-            onChange={handleEmailChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password: </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-      <div>{user ? 'logged in' : 'not logged in'}</div>
-      <button onClick={handleLogOut}>Log out</button>
-    </>
+  return user ? (
+    <AuthenticatedApp handleLogout={handleLogOut} />
+  ) : (
+    <UnauthenticatedApp
+      handleEmailChange={handleEmailChange}
+      handlePasswordChange={handlePasswordChange}
+      handleLogin={handleLogin}
+      handleSignUp={handleSignUp}
+    />
   )
 }
 
