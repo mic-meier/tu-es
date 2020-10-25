@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React from 'react'
+import { useAsync } from 'utils/hooks'
 
 import { Button } from './components/lib'
 import fb from './firebase'
@@ -31,25 +32,28 @@ function Nav({ handleLogout, user }) {
 
 function AuthenticatedApp({ handleLogout, user }) {
   const [newTodo, setNewTodo] = React.useState('')
-  const [todos, setTodos] = React.useState(null)
+  const { data: todos, run } = useAsync()
 
   React.useEffect(() => {
-    db.collection(user.uid)
-      .get()
-      .then((querySnapshot) => {
-        const docsArr = []
-        querySnapshot.forEach((doc) => {
-          docsArr.push({ data: doc.data(), id: doc.id })
+    run(
+      db
+        .collection(`users/${user.uid}/todos`)
+        .get()
+        .then((querySnapshot) => {
+          const docsArr = []
+          querySnapshot.forEach((doc) => {
+            console.log(doc.data())
+            docsArr.push({ data: doc.data(), id: doc.id })
+          })
+          return docsArr
         })
-        setTodos(docsArr)
-      })
-      .catch((e) => console.log('Error: ', e))
-  }, [])
+    )
+  }, [run, user.uid])
 
-  function handleSubmit() {
-    db.collection('users')
-      .doc(user.uid)
-      .collection('todos')
+  function handleSubmit(e) {
+    e.preventDefault()
+
+    db.collection(`users/${user.uid}/todos`)
       .add({
         task: newTodo,
         completed: false,
@@ -63,20 +67,69 @@ function AuthenticatedApp({ handleLogout, user }) {
     setNewTodo('')
   }
 
+  function onUpdateCompleted(todo) {
+    const docRef = db.doc(`users/${user.uid}/todos/${todo.id}`)
+    const isCompleted = !todo.data.completed
+
+    return docRef
+      .update({
+        completed: isCompleted,
+      })
+      .then(() => {
+        console.log('Documentupdated')
+      })
+      .catch((e) => {
+        console.error('Error: ', e)
+      })
+  }
+
   return (
     <React.Fragment>
       <Nav handleLogout={handleLogout} user={user} />
-      <input
-        type="text"
-        value={newTodo}
-        onChange={(e) => setNewTodo(e.target.value)}
-      />
-      <Button variant="primary" onClick={handleSubmit}>
-        Submit
-      </Button>
-      {todos
-        ? todos.map((todo) => <div key={todo.id}>{todo.data.task}</div>)
-        : null}
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+        />
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </form>
+      <div>
+        Todo:
+        {todos
+          ? todos
+              .filter((todo) => todo.data.completed === false)
+              .map((todo) => {
+                return (
+                  <div key={todo.id}>
+                    {todo.data.task}{' '}
+                    <Button onClick={() => onUpdateCompleted(todo)}>
+                      Complete
+                    </Button>
+                  </div>
+                )
+              })
+          : null}
+      </div>
+      <div>
+        Completed:
+        {todos
+          ? todos
+              .filter((todo) => todo.data.completed === true)
+              .map((todo) => {
+                return (
+                  <div key={todo.id}>
+                    {todo.data.task}{' '}
+                    <Button onClick={() => onUpdateCompleted(todo)}>
+                      Unomplete
+                    </Button>
+                  </div>
+                )
+              })
+          : null}
+      </div>
     </React.Fragment>
   )
 }
