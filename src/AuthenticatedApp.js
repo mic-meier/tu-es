@@ -2,11 +2,12 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React from 'react'
+import { addTodo, completeTodo, getTodos } from 'utils/firestore'
+import { useAsync } from 'utils/hooks'
 
 import { Button } from './components/lib'
 
 function Nav({ handleLogout, user }) {
-  console.log('user', user)
   return (
     <nav
       css={{
@@ -28,9 +29,70 @@ function Nav({ handleLogout, user }) {
 }
 
 function AuthenticatedApp({ handleLogout, user }) {
+  const [newTodo, setNewTodo] = React.useState('')
+  const { data: todos, run } = useAsync()
+
+  React.useEffect(() => {
+    run(getTodos(user))
+  }, [run, user])
+
+  function onAddTodo(e) {
+    e.preventDefault()
+    run(addTodo(newTodo, todos, user))
+    setNewTodo('')
+  }
+
+  function onUpdateCompleted(todo) {
+    run(completeTodo(todo, todos, user))
+  }
+
   return (
     <React.Fragment>
       <Nav handleLogout={handleLogout} user={user} />
+      <form onSubmit={onAddTodo}>
+        <input
+          type="text"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+        />
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </form>
+      <div>
+        Todo:
+        {todos
+          ? todos
+              .filter((todo) => todo.data.completed === false)
+              .map((todo) => {
+                return (
+                  <div key={todo.id}>
+                    {todo.data.task}{' '}
+                    <Button onClick={() => onUpdateCompleted(todo)}>
+                      Complete
+                    </Button>
+                  </div>
+                )
+              })
+          : null}
+      </div>
+      <div>
+        Completed:
+        {todos
+          ? todos
+              .filter((todo) => todo.data.completed === true)
+              .map((todo) => {
+                return (
+                  <div key={todo.id}>
+                    {todo.data.task}{' '}
+                    <Button onClick={() => onUpdateCompleted(todo)}>
+                      Unomplete
+                    </Button>
+                  </div>
+                )
+              })
+          : null}
+      </div>
     </React.Fragment>
   )
 }

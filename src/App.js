@@ -6,6 +6,8 @@ import { FullPageSpinner } from './components/lib'
 import fb from './firebase'
 import UnauthenticatedApp from './UnauthenticatedApp'
 
+// const db = fb.firestore()
+
 function App() {
   const {
     data: user,
@@ -30,6 +32,9 @@ function App() {
     await fb
       .auth()
       .createUserWithEmailAndPassword(email, password)
+      // .then((cred) => {
+      //   return db.collection('users').doc(cred.user.uid).collection('todos')
+      // })
       .catch((error) => {
         return Promise.reject(error)
       })
@@ -39,19 +44,18 @@ function App() {
     fb.auth().signOut()
   }
 
-  const authListener = async () => {
-    await fb.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setData(user)
-      } else {
-        setData('')
-      }
-    })
-  }
-
   useEffect(() => {
+    const authListener = async () => {
+      await fb.auth().onAuthStateChanged((user) => {
+        if (user) {
+          setData(user)
+        } else {
+          setData('')
+        }
+      })
+    }
     authListener()
-  }, [])
+  }, [setData])
 
   if (isLoading || isIdle) {
     return <FullPageSpinner />

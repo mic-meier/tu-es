@@ -32,7 +32,7 @@
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,mdx,json}' --config ./.prettierrc"
   },
   "eslintConfig": {
-    "extends": "./.eslintrc.js"
+    "extends": ["react-app", "./.eslintrc.js"]
   },
   "husky": {
     "hooks": {

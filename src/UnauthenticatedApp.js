@@ -53,8 +53,8 @@ function LoginForm({ onSubmit, submitButton }) {
         email: email.value,
         password: password.value,
       })
-    ).catch(() => {
-      return
+    ).catch((e) => {
+      console.error(errorMessages(e))
     })
   }
 
