@@ -44,19 +44,18 @@ function App() {
     fb.auth().signOut()
   }
 
-  const authListener = async () => {
-    await fb.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setData(user)
-      } else {
-        setData('')
-      }
-    })
-  }
-
   useEffect(() => {
+    const authListener = async () => {
+      await fb.auth().onAuthStateChanged((user) => {
+        if (user) {
+          setData(user)
+        } else {
+          setData('')
+        }
+      })
+    }
     authListener()
-  }, [])
+  }, [setData])
 
   if (isLoading || isIdle) {
     return <FullPageSpinner />

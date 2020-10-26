@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React from 'react'
+import { addTodo } from 'utils/firestore'
 import { useAsync } from 'utils/hooks'
 
 import { Button } from './components/lib'
@@ -32,7 +33,7 @@ function Nav({ handleLogout, user }) {
 
 function AuthenticatedApp({ handleLogout, user }) {
   const [newTodo, setNewTodo] = React.useState('')
-  const { data: todos, run } = useAsync()
+  const { data: todos, setData, run } = useAsync()
 
   React.useEffect(() => {
     run(
@@ -50,20 +51,9 @@ function AuthenticatedApp({ handleLogout, user }) {
     )
   }, [run, user.uid])
 
-  function handleSubmit(e) {
+  async function onAddTodo(e) {
     e.preventDefault()
-
-    db.collection(`users/${user.uid}/todos`)
-      .add({
-        task: newTodo,
-        completed: false,
-      })
-      .then((docRef) => {
-        console.log('Document written with ID: ', docRef.id)
-      })
-      .catch((error) => {
-        console.error('Error adding document: ', error)
-      })
+    run(addTodo(newTodo, todos, user))
     setNewTodo('')
   }
 
@@ -86,7 +76,7 @@ function AuthenticatedApp({ handleLogout, user }) {
   return (
     <React.Fragment>
       <Nav handleLogout={handleLogout} user={user} />
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={onAddTodo}>
         <input
           type="text"
           value={newTodo}
