@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React from 'react'
-import { addTodo } from 'utils/firestore'
+import { addTodo, completeTodo } from 'utils/firestore'
 import { useAsync } from 'utils/hooks'
 
 import { Button } from './components/lib'
@@ -33,7 +33,7 @@ function Nav({ handleLogout, user }) {
 
 function AuthenticatedApp({ handleLogout, user }) {
   const [newTodo, setNewTodo] = React.useState('')
-  const { data: todos, setData, run } = useAsync()
+  const { data: todos, run } = useAsync()
 
   React.useEffect(() => {
     run(
@@ -43,7 +43,6 @@ function AuthenticatedApp({ handleLogout, user }) {
         .then((querySnapshot) => {
           const docsArr = []
           querySnapshot.forEach((doc) => {
-            console.log(doc.data())
             docsArr.push({ data: doc.data(), id: doc.id })
           })
           return docsArr
@@ -58,19 +57,7 @@ function AuthenticatedApp({ handleLogout, user }) {
   }
 
   function onUpdateCompleted(todo) {
-    const docRef = db.doc(`users/${user.uid}/todos/${todo.id}`)
-    const isCompleted = !todo.data.completed
-
-    return docRef
-      .update({
-        completed: isCompleted,
-      })
-      .then(() => {
-        console.log('Documentupdated')
-      })
-      .catch((e) => {
-        console.error('Error: ', e)
-      })
+    run(completeTodo(todo, todos, user))
   }
 
   return (

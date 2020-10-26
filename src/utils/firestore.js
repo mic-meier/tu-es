@@ -15,4 +15,22 @@ async function addTodo(task, todos, user) {
   }
 }
 
-export { addTodo }
+async function completeTodo(todo, todos, user) {
+  const docRef = db.doc(`users/${user.uid}/todos/${todo.id}`)
+  const isCompleted = !todo.data.completed
+
+  try {
+    await docRef.update({ completed: isCompleted })
+    const updatedTodo = await docRef.get()
+    const updatedTodoData = updatedTodo.data()
+    return todos.map((todo) =>
+      todo.id === updatedTodo.id
+        ? { data: updatedTodoData, id: updatedTodo.id }
+        : todo
+    )
+  } catch (e) {
+    console.error('Error updating document ', e)
+  }
+}
+
+export { addTodo, completeTodo }
