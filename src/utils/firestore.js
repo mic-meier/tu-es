@@ -33,4 +33,17 @@ async function completeTodo(todo, todos, user) {
   }
 }
 
-export { addTodo, completeTodo }
+async function getTodos(user) {
+  try {
+    const querySnapshot = await db.collection(`users/${user.uid}/todos`).get()
+    const docsArr = []
+    querySnapshot.forEach((doc) => {
+      docsArr.push({ data: doc.data(), id: doc.id })
+    })
+    return docsArr
+  } catch (e) {
+    console.error('Error getting todos ', e)
+  }
+}
+
+export { addTodo, completeTodo, getTodos }

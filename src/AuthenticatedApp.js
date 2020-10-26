@@ -2,13 +2,10 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React from 'react'
-import { addTodo, completeTodo } from 'utils/firestore'
+import { addTodo, completeTodo, getTodos } from 'utils/firestore'
 import { useAsync } from 'utils/hooks'
 
 import { Button } from './components/lib'
-import fb from './firebase'
-
-const db = fb.firestore()
 
 function Nav({ handleLogout, user }) {
   return (
@@ -36,21 +33,10 @@ function AuthenticatedApp({ handleLogout, user }) {
   const { data: todos, run } = useAsync()
 
   React.useEffect(() => {
-    run(
-      db
-        .collection(`users/${user.uid}/todos`)
-        .get()
-        .then((querySnapshot) => {
-          const docsArr = []
-          querySnapshot.forEach((doc) => {
-            docsArr.push({ data: doc.data(), id: doc.id })
-          })
-          return docsArr
-        })
-    )
-  }, [run, user.uid])
+    run(getTodos(user))
+  }, [run, user])
 
-  async function onAddTodo(e) {
+  function onAddTodo(e) {
     e.preventDefault()
     run(addTodo(newTodo, todos, user))
     setNewTodo('')
