@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React from 'react'
+import { GrAdd } from 'react-icons/gr'
 import { addTodo, completeTodo, getTodos } from 'utils/firestore'
 import { useAsync } from 'utils/hooks'
 
@@ -55,9 +56,17 @@ function AuthenticatedApp({ handleLogout, user }) {
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
         />
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
+        <button
+          type="submit"
+          css={{
+            border: '0',
+            position: 'relative',
+            marginLeft: '-30px',
+            background: 'transparent',
+          }}
+        >
+          <GrAdd />
+        </button>
       </form>
       <div>
         Todo:
