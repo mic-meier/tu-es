@@ -6,7 +6,7 @@ import { GrAdd } from 'react-icons/gr'
 import { addTodo, completeTodo, getTodos } from 'utils/firestore'
 import { useAsync } from 'utils/hooks'
 
-import { Button } from './components/lib'
+import { Button, Input } from './components/lib'
 
 function Nav({ handleLogout, user }) {
   return (
@@ -51,7 +51,7 @@ function AuthenticatedApp({ handleLogout, user }) {
     <React.Fragment>
       <Nav handleLogout={handleLogout} user={user} />
       <form onSubmit={onAddTodo}>
-        <input
+        <Input
           type="text"
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}

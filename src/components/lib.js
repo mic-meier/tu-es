@@ -23,13 +23,14 @@ const CircleButton = styled.button({
   alignItems: 'center',
   justifyContent: 'center',
   background: '#f1f2f7',
-  color: colors.textDark,
+  color: colors.neutral900,
   border: `1px solid #f1f1f4`,
   cursor: 'pointer',
 })
 
 const Spinner = styled(ImSpinner3)({
   animation: `${spin} 1s linear infinite`,
+  color: colors.neutral900,
 })
 Spinner.defaultProps = {
   'aria-label': 'loading',
@@ -37,13 +38,13 @@ Spinner.defaultProps = {
 
 const buttonVariants = {
   primary: {
-    background: colors.primary,
-    color: colors.textLight,
+    background: colors.primary500,
+    color: colors.neutral000,
   },
   secondary: {
-    background: colors.background,
-    border: `1px solid ${colors.accent}`,
-    color: colors.accent,
+    background: colors.neutral000,
+    border: `1px solid ${colors.primary500}`,
+    color: colors.neutral900,
   },
 }
 
@@ -59,11 +60,11 @@ const Button = styled.button(
 
 const inputStyles = {
   border: '1px solid #f1f1f4',
-  background: '#f1f2f7',
+  background: colors.indigo000,
   padding: '8px 12px',
 }
 
-const Input = styled.input({ borderRadius: '3px', ...inputStyles })
+const Input = styled.input({ borderRadius: '5px', ...inputStyles })
 
 const Dialog = styled(ReachDialog)({
   maxWidth: '450px',
@@ -108,7 +109,7 @@ function ErrorMessage({ errorMessage, variant = 'stacked', ...props }) {
   return (
     <div
       role="alert"
-      css={[{ color: colors.warning }, errorMessageVariants[variant]]}
+      css={[{ color: colors.red500 }, errorMessageVariants[variant]]}
       {...props}
     >
       <pre
