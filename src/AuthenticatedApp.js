@@ -50,57 +50,59 @@ function AuthenticatedApp({ handleLogout, user }) {
   return (
     <React.Fragment>
       <Nav handleLogout={handleLogout} user={user} />
-      <form onSubmit={onAddTodo}>
-        <Input
-          type="text"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-        />
-        <button
-          type="submit"
-          css={{
-            border: '0',
-            position: 'relative',
-            marginLeft: '-30px',
-            background: 'transparent',
-          }}
-        >
-          <GrAdd />
-        </button>
-      </form>
-      <div>
-        Todo:
-        {todos
-          ? todos
-              .filter((todo) => todo.data.completed === false)
-              .map((todo) => {
-                return (
-                  <div key={todo.id}>
-                    {todo.data.task}{' '}
-                    <Button onClick={() => onUpdateCompleted(todo)}>
-                      Complete
-                    </Button>
-                  </div>
-                )
-              })
-          : null}
-      </div>
-      <div>
-        Completed:
-        {todos
-          ? todos
-              .filter((todo) => todo.data.completed === true)
-              .map((todo) => {
-                return (
-                  <div key={todo.id}>
-                    {todo.data.task}{' '}
-                    <Button onClick={() => onUpdateCompleted(todo)}>
-                      Unomplete
-                    </Button>
-                  </div>
-                )
-              })
-          : null}
+      <div css={{ maxWidth: '640px', margin: 'auto' }}>
+        <form onSubmit={onAddTodo}>
+          <Input
+            type="text"
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+          />
+          <button
+            type="submit"
+            css={{
+              border: '0',
+              position: 'relative',
+              marginLeft: '-30px',
+              background: 'transparent',
+            }}
+          >
+            <GrAdd />
+          </button>
+        </form>
+        <div>
+          Todo:
+          {todos
+            ? todos
+                .filter((todo) => todo.data.completed === false)
+                .map((todo) => {
+                  return (
+                    <div key={todo.id}>
+                      {todo.data.task}{' '}
+                      <Button onClick={() => onUpdateCompleted(todo)}>
+                        Complete
+                      </Button>
+                    </div>
+                  )
+                })
+            : null}
+        </div>
+        <div>
+          Completed:
+          {todos
+            ? todos
+                .filter((todo) => todo.data.completed === true)
+                .map((todo) => {
+                  return (
+                    <div key={todo.id}>
+                      {todo.data.task}{' '}
+                      <Button onClick={() => onUpdateCompleted(todo)}>
+                        Unomplete
+                      </Button>
+                    </div>
+                  )
+                })
+            : null}
+        </div>
       </div>
     </React.Fragment>
   )

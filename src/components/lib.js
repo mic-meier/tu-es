@@ -60,8 +60,9 @@ const Button = styled.button(
 
 const inputStyles = {
   border: '1px solid #f1f1f4',
-  background: colors.indigo000,
+  background: colors.neutral100,
   padding: '8px 12px',
+  width: '100%',
 }
 
 const Input = styled.input({ borderRadius: '5px', ...inputStyles })
