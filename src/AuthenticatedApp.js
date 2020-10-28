@@ -2,25 +2,17 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React from 'react'
-import { GrAdd } from 'react-icons/gr'
 import { addTodo, completeTodo, getTodos } from 'utils/firestore'
 import { useAsync } from 'utils/hooks'
 
-import { Button, Input } from './components/lib'
+import { Button, TodoInput } from './components/lib'
 
 function Nav({ handleLogout, user }) {
   return (
-    <nav
-      css={{
-        width: '100vw',
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: '0.5rem 1rem',
-      }}
-    >
-      <h2>Tu Es</h2>
+    <nav tw="w-screen flex justify-between py-2 px-4 mb-10 bg-primary-900 text-neutral-100">
+      <h2 tw="py-2 m-0">Tu Es</h2>
       <div>
-        <span css={{ padding: '0 1rem' }}>{user.email}</span>
+        <span tw="py-0 px-4">{user.email}</span>
         <Button variant="secondary" onClick={handleLogout}>
           Log out
         </Button>
@@ -48,26 +40,15 @@ function AuthenticatedApp({ handleLogout, user }) {
   }
 
   return (
-    <React.Fragment>
+    <div tw="bg-white h-screen w-screen text-neutral-900">
       <Nav handleLogout={handleLogout} user={user} />
       <div css={{ maxWidth: '550px', margin: 'auto' }}>
         <form onSubmit={onAddTodo}>
-          <Input
+          <TodoInput
             type="text"
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}
           />
-          <button
-            type="submit"
-            css={{
-              border: '0',
-              position: 'relative',
-              marginLeft: '-30px',
-              background: 'transparent',
-            }}
-          >
-            <GrAdd />
-          </button>
         </form>
         <div>
           Todo:
@@ -104,7 +85,7 @@ function AuthenticatedApp({ handleLogout, user }) {
             : null}
         </div>
       </div>
-    </React.Fragment>
+    </div>
   )
 }
 

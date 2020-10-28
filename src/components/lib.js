@@ -1,18 +1,13 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import { keyframes } from '@emotion/core'
 import styled from '@emotion/styled/macro'
 import { Dialog as ReachDialog } from '@reach/dialog'
-import { ImSpinner3 } from 'react-icons/im'
+import React from 'react'
+import { ImPlus, ImSpinner3 } from 'react-icons/im'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
 import tw from 'twin.macro'
-
-const spin = keyframes({
-  '0%': { transform: 'rotate(0deg)' },
-  '100%': { transform: 'rotate(360deg)' },
-})
 
 const CircleButton = styled.button({
   borderRadius: '30px',
@@ -29,10 +24,7 @@ const CircleButton = styled.button({
   cursor: 'pointer',
 })
 
-const Spinner = styled(ImSpinner3)({
-  animation: `${spin} 1s linear infinite`,
-  color: colors.neutral900,
-})
+const Spinner = styled(ImSpinner3)(tw`text-neutral-900 animate-spin`)
 Spinner.defaultProps = {
   'aria-label': 'loading',
 }
@@ -59,14 +51,15 @@ const Button = styled.button(
   ({ variant = 'primary' }) => buttonVariants[variant]
 )
 
-// const inputStyles = {
-//   border: '1px solid #f1f1f4',
-//   background: colors.neutral100,
-//   padding: '8px 12px',
-//   width: '100%',
-// }
+const Input = styled.input(
+  tw`bg-neutral-200 pl-6 rounded-full h-10 align-middle`
+)
 
-const Input = styled.input(tw`bg-neutral-100 md:bg-primary-500`)
+const AddButton = styled.button(
+  tw`w-6 h-6 p-1 bg-neutral-100 rounded-full align-middle`
+)
+
+const AddPlus = styled(ImPlus)(tw`text-primary-300`)
 
 const Dialog = styled(ReachDialog)({
   maxWidth: '450px',
@@ -87,18 +80,27 @@ const FormGroup = styled.div({
 
 function FullPageSpinner() {
   return (
-    <div
-      css={{
-        fontSize: '4em',
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <div tw="text-6xl h-screen flex flex-col justify-center items-center">
       <Spinner />
     </div>
+  )
+}
+
+function TodoInput() {
+  return (
+    <React.Fragment>
+      <Input />
+      <AddButton
+        type="submit"
+        css={{
+          border: '0',
+          position: 'relative',
+          marginLeft: '-30px',
+        }}
+      >
+        <AddPlus />
+      </AddButton>
+    </React.Fragment>
   )
 }
 
@@ -127,6 +129,7 @@ function ErrorMessage({ errorMessage, variant = 'stacked', ...props }) {
 }
 
 export {
+  AddButton,
   Button,
   CircleButton,
   Dialog,
@@ -135,4 +138,5 @@ export {
   Input,
   Spinner,
   FullPageSpinner,
+  TodoInput,
 }
