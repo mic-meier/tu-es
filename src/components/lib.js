@@ -7,6 +7,7 @@ import { Dialog as ReachDialog } from '@reach/dialog'
 import { ImSpinner3 } from 'react-icons/im'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
+import tw from 'twin.macro'
 
 const spin = keyframes({
   '0%': { transform: 'rotate(0deg)' },
@@ -58,14 +59,14 @@ const Button = styled.button(
   ({ variant = 'primary' }) => buttonVariants[variant]
 )
 
-const inputStyles = {
-  border: '1px solid #f1f1f4',
-  background: colors.neutral100,
-  padding: '8px 12px',
-  width: '100%',
-}
+// const inputStyles = {
+//   border: '1px solid #f1f1f4',
+//   background: colors.neutral100,
+//   padding: '8px 12px',
+//   width: '100%',
+// }
 
-const Input = styled.input({ borderRadius: '5px', ...inputStyles })
+const Input = styled.input(tw`bg-neutral-100 md:bg-primary-500`)
 
 const Dialog = styled(ReachDialog)({
   maxWidth: '450px',

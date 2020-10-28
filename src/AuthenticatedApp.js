@@ -50,7 +50,7 @@ function AuthenticatedApp({ handleLogout, user }) {
   return (
     <React.Fragment>
       <Nav handleLogout={handleLogout} user={user} />
-      <div css={{ maxWidth: '640px', margin: 'auto' }}>
+      <div css={{ maxWidth: '550px', margin: 'auto' }}>
         <form onSubmit={onAddTodo}>
           <Input
             type="text"
