@@ -1,5 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
+import 'twin.macro'
+
 import { jsx } from '@emotion/core'
 import { Modal, ModalContents, ModalOpenButton } from 'components/modal'
 import React from 'react'
@@ -76,11 +78,11 @@ function LoginForm({ onSubmit, submitButton }) {
     >
       <FormGroup>
         <label htmlFor="email">Email:</label>
-        <Input id="email" ref={emailInput} />
+        <input id="email" ref={emailInput} />
       </FormGroup>
       <FormGroup>
         <label htmlFor="password">Password:</label>
-        <Input id="password" type="password" />
+        <input id="password" type="password" />
       </FormGroup>
       <div>
         {React.cloneElement(

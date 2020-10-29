@@ -51,14 +51,9 @@ const Button = styled.button(
   ({ variant = 'primary' }) => buttonVariants[variant]
 )
 
-const Input = styled.input(
-  tw`bg-neutral-100 mr-4 ml-2 px-6 rounded-full h-10
-  align-middle w-full max-w-screen-sm focus:(outline-none border-2 border-primary-400)`
-)
-
 const AddButton = styled.button(
-  tw`w-6 h-6 p-1 -ml-12 mr-4  bg-neutral-200 rounded-full align-middle  relative
-  focus:(outline-none shadow-outline)`
+  tw`flex w-6 h-6 place-items-center bg-neutral-200 rounded-full
+  focus:(outline-none shadow-outline) justify-center`
 )
 
 const AddPlus = styled(ImPlus)(tw`text-white`)
@@ -90,12 +85,20 @@ function FullPageSpinner() {
 
 function TodoInput({ value, onChange }) {
   return (
-    <React.Fragment>
-      <Input onChange={onChange} value={value} />
+    <div
+      tw="flex items-center justify-between bg-neutral-100 pl-6 pr-2
+      rounded-full h-10 align-middle w-full max-w-screen-sm focus:outline-none
+      hover:(border-2 border-primary-400)"
+    >
+      <input
+        onChange={onChange}
+        value={value}
+        tw="bg-transparent h-full w-11/12 focus:outline-none"
+      />
       <AddButton type="submit">
         <AddPlus />
       </AddButton>
-    </React.Fragment>
+    </div>
   )
 }
 
@@ -130,7 +133,6 @@ export {
   Dialog,
   ErrorMessage,
   FormGroup,
-  Input,
   Spinner,
   FullPageSpinner,
   TodoInput,

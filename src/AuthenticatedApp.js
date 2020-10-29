@@ -44,51 +44,33 @@ function AuthenticatedApp({ handleLogout, user }) {
   return (
     <div tw="text-neutral-900">
       <Nav handleLogout={handleLogout} user={user} />
-      <div tw="flex justify-center items-center">
-        <form
-          onSubmit={onAddTodo}
-          tw="flex items-center justify-center w-full mx-2"
-        >
+      <div tw="block justify-center items-center w-full max-w-screen-sm mx-auto px-1">
+        <form onSubmit={onAddTodo} tw="flex items-center justify-center w-full">
           <TodoInput
             type="text"
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}
           />
         </form>
-      </div>
-      <div>
-        Todo:
-        {todos
-          ? todos
-              .filter((todo) => todo.data.completed === false)
-              .map((todo) => {
-                return (
-                  <div key={todo.id}>
-                    {todo.data.task}{' '}
-                    <Button onClick={() => onUpdateCompleted(todo)}>
-                      Complete
-                    </Button>
-                  </div>
-                )
-              })
-          : null}
-      </div>
-      <div>
-        Completed:
-        {todos
-          ? todos
-              .filter((todo) => todo.data.completed === true)
-              .map((todo) => {
-                return (
-                  <div key={todo.id}>
-                    {todo.data.task}{' '}
-                    <Button onClick={() => onUpdateCompleted(todo)}>
-                      Unomplete
-                    </Button>
-                  </div>
-                )
-              })
-          : null}
+        <div tw="flex justify-start px-6 py-12">
+          <div>
+            Todo:
+            {todos
+              ? todos
+                  .filter((todo) => todo.data.completed === false)
+                  .map((todo) => {
+                    return (
+                      <div key={todo.id}>
+                        {todo.data.task}{' '}
+                        <Button onClick={() => onUpdateCompleted(todo)}>
+                          Complete
+                        </Button>
+                      </div>
+                    )
+                  })
+              : null}
+          </div>
+        </div>
       </div>
     </div>
   )
