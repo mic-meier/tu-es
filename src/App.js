@@ -6,8 +6,6 @@ import { FullPageSpinner } from './components/lib'
 import fb from './firebase'
 import UnauthenticatedApp from './UnauthenticatedApp'
 
-// const db = fb.firestore()
-
 function App() {
   const {
     data: user,

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "plugins": [{"name": "typescript-plugin-tw-template"}]
   },
   "include": ["src", "node_modules/cypress", "./cypress/**/*.js"]
 }

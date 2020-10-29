@@ -1,17 +1,13 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import { keyframes } from '@emotion/core'
 import styled from '@emotion/styled/macro'
 import { Dialog as ReachDialog } from '@reach/dialog'
-import { ImSpinner3 } from 'react-icons/im'
+import React from 'react'
+import { ImPlus, ImSpinner3 } from 'react-icons/im'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
-
-const spin = keyframes({
-  '0%': { transform: 'rotate(0deg)' },
-  '100%': { transform: 'rotate(360deg)' },
-})
+import tw from 'twin.macro'
 
 const CircleButton = styled.button({
   borderRadius: '30px',
@@ -28,10 +24,7 @@ const CircleButton = styled.button({
   cursor: 'pointer',
 })
 
-const Spinner = styled(ImSpinner3)({
-  animation: `${spin} 1s linear infinite`,
-  color: colors.neutral900,
-})
+const Spinner = styled(ImSpinner3)(tw`text-neutral-900 animate-spin`)
 Spinner.defaultProps = {
   'aria-label': 'loading',
 }
@@ -58,14 +51,17 @@ const Button = styled.button(
   ({ variant = 'primary' }) => buttonVariants[variant]
 )
 
-const inputStyles = {
-  border: '1px solid #f1f1f4',
-  background: colors.neutral100,
-  padding: '8px 12px',
-  width: '100%',
-}
+const Input = styled.input(
+  tw`bg-neutral-100 mr-4 ml-2 px-6 rounded-full h-10
+  align-middle w-full max-w-screen-sm focus:(outline-none border-2 border-primary-400)`
+)
 
-const Input = styled.input({ borderRadius: '5px', ...inputStyles })
+const AddButton = styled.button(
+  tw`w-6 h-6 p-1 -ml-12 mr-4  bg-neutral-200 rounded-full align-middle  relative
+  focus:(outline-none shadow-outline)`
+)
+
+const AddPlus = styled(ImPlus)(tw`text-white`)
 
 const Dialog = styled(ReachDialog)({
   maxWidth: '450px',
@@ -86,18 +82,20 @@ const FormGroup = styled.div({
 
 function FullPageSpinner() {
   return (
-    <div
-      css={{
-        fontSize: '4em',
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <div tw="text-6xl h-screen flex flex-col justify-center items-center">
       <Spinner />
     </div>
+  )
+}
+
+function TodoInput({ value, onChange }) {
+  return (
+    <React.Fragment>
+      <Input onChange={onChange} value={value} />
+      <AddButton type="submit">
+        <AddPlus />
+      </AddButton>
+    </React.Fragment>
   )
 }
 
@@ -126,6 +124,7 @@ function ErrorMessage({ errorMessage, variant = 'stacked', ...props }) {
 }
 
 export {
+  AddButton,
   Button,
   CircleButton,
   Dialog,
@@ -134,4 +133,5 @@ export {
   Input,
   Spinner,
   FullPageSpinner,
+  TodoInput,
 }

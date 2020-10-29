@@ -21,6 +21,7 @@
     "react-icons": "^3.11.0",
     "react-scripts": "4.0.0",
     "stop-runaway-react-effects": "^2.0.0",
+    "twin.macro": "^1.12.0",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
@@ -32,7 +33,10 @@
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,mdx,json}' --config ./.prettierrc"
   },
   "eslintConfig": {
-    "extends": ["react-app", "./.eslintrc.js"]
+    "extends": [
+      "react-app",
+      "./.eslintrc.js"
+    ]
   },
   "husky": {
     "hooks": {
@@ -70,7 +74,9 @@
     "i": "^0.3.6",
     "lint-staged": "^10.4.2",
     "prettier": "^2.1.2",
+    "tailwindcss": "^1.9.6",
     "typescript": "^4.0.3",
+    "typescript-plugin-tw-template": "^2.1.0",
     "typescriptnpm": "^1.0.1"
   }
 }
