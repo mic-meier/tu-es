@@ -52,14 +52,16 @@ const Button = styled.button(
 )
 
 const Input = styled.input(
-  tw`bg-neutral-200 pl-6 rounded-full h-10 align-middle`
+  tw`bg-neutral-100 mr-1 px-6 rounded-full h-10
+  align-middle w-full max-w-screen-sm focus:(outline-none border-2 border-primary-400)`
 )
 
 const AddButton = styled.button(
-  tw`w-6 h-6 p-1 bg-neutral-100 rounded-full align-middle`
+  tw`w-6 h-6 p-1 -ml-10 bg-neutral-200 rounded-full align-middle  relative
+  focus:(outline-none shadow-outline)`
 )
 
-const AddPlus = styled(ImPlus)(tw`text-primary-300`)
+const AddPlus = styled(ImPlus)(tw`text-white`)
 
 const Dialog = styled(ReachDialog)({
   maxWidth: '450px',
@@ -86,18 +88,11 @@ function FullPageSpinner() {
   )
 }
 
-function TodoInput() {
+function TodoInput({ value, onChange }) {
   return (
     <React.Fragment>
-      <Input />
-      <AddButton
-        type="submit"
-        css={{
-          border: '0',
-          position: 'relative',
-          marginLeft: '-30px',
-        }}
-      >
+      <Input onChange={onChange} value={value} />
+      <AddButton type="submit">
         <AddPlus />
       </AddButton>
     </React.Fragment>
