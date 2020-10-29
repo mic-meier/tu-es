@@ -52,12 +52,12 @@ const Button = styled.button(
 )
 
 const Input = styled.input(
-  tw`bg-neutral-100 mr-1 px-6 rounded-full h-10
+  tw`bg-neutral-100 mr-4 ml-2 px-6 rounded-full h-10
   align-middle w-full max-w-screen-sm focus:(outline-none border-2 border-primary-400)`
 )
 
 const AddButton = styled.button(
-  tw`w-6 h-6 p-1 -ml-10 bg-neutral-200 rounded-full align-middle  relative
+  tw`w-6 h-6 p-1 -ml-12 mr-4  bg-neutral-200 rounded-full align-middle  relative
   focus:(outline-none shadow-outline)`
 )
 

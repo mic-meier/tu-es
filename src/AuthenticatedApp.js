@@ -42,12 +42,12 @@ function AuthenticatedApp({ handleLogout, user }) {
   }
 
   return (
-    <div tw="h-screen w-screen text-neutral-900">
+    <div tw="text-neutral-900">
       <Nav handleLogout={handleLogout} user={user} />
       <div tw="flex justify-center items-center">
         <form
           onSubmit={onAddTodo}
-          tw="flex items-center justify-center w-screen"
+          tw="flex items-center justify-center w-full mx-2"
         >
           <TodoInput
             type="text"
